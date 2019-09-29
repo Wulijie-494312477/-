@@ -10,11 +10,11 @@
                     <table>
                         <tr>
                             <td><i class="el-icon-user-solid"></i></td>
-                            <td><input type="text"></td>
+                            <td><input type="text" v-model="username"></td>
                         </tr>
                         <tr>
                             <td><i class="el-icon-lock"></i></td>
-                            <td><input type="password" autoComplete="new-password"></td>
+                            <td><input type="password" v-model="pwd" autoComplete="new-password"></td>
                         </tr>
                         <tr>
                             <td colspan="2">
@@ -34,9 +34,22 @@
 
 <script>
 export default {
+    data(){
+        return{
+            username:"",
+            pwd:""
+        }
+    },
     methods:{
         login(){
-            this.$router.push('/main')
+           let username = this.username
+            let pwd = this.pwd
+            let url = "http://localhost:8888/backstage-system/api/login.php?username="+username+"&pwd="+pwd+"&token="+localStorage["uToken"];
+            this.$axios.get(url).then((res)=>{
+                if(res.data.msg=="loginOk"){
+                    this.$router.push('/main')
+                }
+            })
         },
         zhu(){
             this.$router.push('/zhu')
